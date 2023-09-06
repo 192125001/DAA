@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
+
+#define N 4 
+
+int costMatrix[N][N] = {
+    {9, 2, 7, 8},
+    {6, 4, 3, 7},
+    {5, 8, 1, 8},
+    {7, 6, 9, 4}
+};
+
+bool assigned[N];
+int minCost = INT_MAX;
+
+void branchAndBound(int worker, int currentCost, int tasksAssigned) {
+    if (tasksAssigned == N) {
+        if (currentCost < minCost) {
+            minCost = currentCost;
+        }
+        return;
+    }
+
+    if (currentCost >= minCost) {
+        return;
+    }
+
+    for (int task = 0; task < N; task++) {
+        if (!assigned[task]) {
+            assigned[task] = true;
+            branchAndBound(worker + 1, currentCost + costMatrix[worker][task], tasksAssigned + 1);
+            assigned[task] = false;
+        }
+    }
+}
+
+int main() {
+    for (int i = 0; i < N; i++) {
+        assigned[i] = false;
+    }
+
+    branchAndBound(0, 0, 0);
+
+    printf("Minimum cost: %d\n", minCost);
+
+    return 0;
+}
