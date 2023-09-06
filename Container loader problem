@@ -1,0 +1,32 @@
+#include <stdio.h>
+#define CONTAINER_CAPACITY 10
+#define MAX_ITEMS 5
+void containerLoader(int items[], int n) {
+    int container[CONTAINER_CAPACITY] = {0};  
+    int containerCount = 0;
+
+    for (int i = 0; i < n; i++) {
+        int itemSize = items[i];
+        int j;
+        for (j = 0; j < containerCount; j++) {
+            if (container[j] >= itemSize) {
+                container[j] -= itemSize;
+                printf("Item %d of size %d is placed in container %d\n", i + 1, itemSize, j + 1);
+                break;
+            }
+        }
+        if (j == containerCount) {
+            container[containerCount++] = CONTAINER_CAPACITY - itemSize;
+            printf("Item %d of size %d is placed in a new container %d\n", i + 1, itemSize, containerCount);
+        }
+    }
+}
+
+int main() {
+    int items[MAX_ITEMS] = {2, 5, 4, 7, 3};
+
+    printf("Container Loading:\n");
+    containerLoader(items, MAX_ITEMS);
+
+    return 0;
+}
